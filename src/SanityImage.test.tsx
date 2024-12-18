@@ -280,6 +280,34 @@ describe("svg source image", () => {
   })
 })
 
+describe('vanity filename', () => {
+  describe('when provided vanityFilename prop', () => {
+    it('appends vanity filename to src and srcset URLs', () => {
+      const vanityFilename = 'custom-name'
+
+      const { baseElement } = render(
+        <SanityImage
+          id={id}
+          baseUrl={baseUrl}
+          vanityFilename={vanityFilename}
+          width={500}
+        />
+      )
+
+      const { src, srcset } = getAttributes(baseElement)
+      console.log(srcset);
+
+      expect(src).toEqual(
+        `/images/abc123-1000x1000.jpg/${vanityFilename}?auto=format&fit=max&q=75&w=500`
+      )
+
+      expect(srcset).toEqual(
+        `/images/abc123-1000x1000.jpg/${vanityFilename}?auto=format&fit=max&q=75&w=250 250w, /images/abc123-1000x1000.jpg/${vanityFilename}?auto=format&fit=max&q=75&w=500 500w, /images/abc123-1000x1000.jpg/${vanityFilename}?auto=format&fit=max&q=75&w=750 750w, /images/abc123-1000x1000.jpg/${vanityFilename}?auto=format&fit=max&q=75&w=1000 1000w`
+      )
+    })
+  })
+})
+
 describe("custom query string params", () => {
   it("supports valid query string params", () => {
     const { baseElement } = render(
